@@ -1,48 +1,71 @@
-import express from "express"
-import 'dotenv/config'
-import connectDB from "./config/database.js"
-import userRoute from "./routes/user.route.js"
-import todoRoute from "./routes/todo.route.js"
-import cors from 'cors'
+import express from "express";
+import "dotenv/config";
+import connectDB from "./config/database.js";
+import userRoute from "./routes/user.route.js";
+import todoRoute from "./routes/todo.route.js";
+import cors from "cors";
 import "./config/passport.js";
-import authRoutes from "./routes/auth.route.js"
-// import cookieParser from "cookie-parser"
+import authRoutes from "./routes/auth.route.js";
 
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-const app = express()
-const PORT = process.env.PORT || 3000
+// Middleware 
+app.use(express.json());
 
-// middleware
-app.use(express.json())
-app.use(cors({
-    origin:'http://localhost:5173',
-    credentials:true
-}))
+// Dynamic CORS setup
+const allowedOrigins = [
+  process.env.CLIENT_URL, // Local frontend
+  process.env.PROD_CLIENT_URL, // Vercel frontend
+];
 
-// app.use('/uploads', express.static('uploads'));
-// app.use(cookieParser())
+app.use(
+  cors({
+    origin: (origin, callback) => {
+            // allow requests with no origin (like mobile apps or curl)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.error(`❌ CORS blocked for origin: ${origin}`);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
+// Routes 
 app.use("/auth", authRoutes);
-app.use("/api/v1/user", userRoute)
-app.use("/api/v1/todo", todoRoute)
+app.use("/api/v1/user", userRoute);
+app.use("/api/v1/todo", todoRoute);
 
+// Root route for health check
+app.get("/", (req, res) => {
+  res.send("✅ Notes App Server is running successfully 🚀");
+});
+
+// Error Handling 
 app.use((err, req, res, next) => {
+  if (err.message === "Not allowed by CORS") {
+    return res.status(403).json({
+      success: false,
+      message: "CORS error: This origin is not allowed.",
+    });
+  }
+
   if (err.code === "LIMIT_FILE_SIZE") {
     return res.status(400).json({
       success: false,
       message: "File size too large. Max allowed is 5MB.",
     });
   }
+  console.error("🔥 Server Error:", err.message);
+  res.status(500).json({ success: false, message: "Internal Server Error" });
   next(err);
 });
 
-
-app.listen(PORT, ()=>{
-    console.log(`Server is running successfully on port ${PORT}`);
-    connectDB()
-})
-
-app.get("/", (req, res) => {
-  res.send("Notes App Server is running successfully 🚀");
+// Start Server 
+app.listen(PORT, () => {
+  console.log(`Server is running successfully on port ${PORT}`);
+  connectDB();
 });
-

@@ -29,8 +29,6 @@ const ResendEmail = ({ email: propEmail }) => {
       return;
     }
 
-    // Prevent double clicks
-    if (loading || resendTimer > 0) return;
 
     // Disable button immediately
     setLoading(true);

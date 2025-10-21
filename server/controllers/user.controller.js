@@ -199,6 +199,7 @@ export const resendVerification = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
+    
     user.token = token;
     await user.save(); // Save user first to prevent race conditions
 

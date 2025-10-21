@@ -4,7 +4,7 @@ import connectDB from "./config/database.js"
 import userRoute from "./routes/user.route.js"
 import todoRoute from "./routes/todo.route.js"
 import cors from 'cors'
-import "./config/passport.js"; // important to load passport config
+import "./config/passport.js";
 import authRoutes from "./routes/auth.route.js"
 // import cookieParser from "cookie-parser"
 
@@ -38,6 +38,11 @@ app.use((err, req, res, next) => {
 
 
 app.listen(PORT, ()=>{
-    console.log(`Server listen at port ${PORT}`);
+    console.log(`Server is running successfully on port ${PORT}`);
     connectDB()
 })
+
+app.get("/", (req, res) => {
+  res.send("Notes App Server is running successfully 🚀");
+});
+

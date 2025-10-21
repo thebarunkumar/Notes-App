@@ -29,6 +29,10 @@ const ResendEmail = ({ email: propEmail }) => {
       return;
     }
 
+    // Prevent double clicks
+    if (loading || resendTimer > 0) return;
+
+    // Disable button immediately
     setLoading(true);
     setMessage("");
     setError("");
@@ -40,11 +44,16 @@ const ResendEmail = ({ email: propEmail }) => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      setMessage(response.data.message || "Verification link has been resent successfully!");
+      setMessage(
+        response.data.message ||
+          "Verification link has been resent successfully!"
+      );
       setResendTimer(60);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || "Failed to resend the verification link.");
+      setError(
+        err.response?.data?.message || "Failed to resend the verification link."
+      );
     } finally {
       setLoading(false);
     }
@@ -56,16 +65,21 @@ const ResendEmail = ({ email: propEmail }) => {
         <div className="flex justify-center mb-4">
           <CheckCircle2 className="text-primaryBlue w-12 h-12" />
         </div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-blue-700 mb-4">Verify Your Email</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-blue-700 mb-4">
+          Verify Your Email
+        </h2>
         {email ? (
           <p className="text-gray-700 text-base mb-6 leading-relaxed">
-            A verification link has been sent to <span className="font-semibold text-gray-900">{email}</span>. <br />
+            A verification link has been sent to{" "}
+            <span className="font-semibold text-gray-900">{email}</span>. <br />
             Please check your inbox and click the link to activate your account.
           </p>
         ) : (
           // When email is missing, show an input so user can enter it and resend
           <div className="mb-6">
-            <p className="text-gray-700 text-base mb-3">Enter your email to resend verification:</p>
+            <p className="text-gray-700 text-base mb-3">
+              Enter your email to resend verification:
+            </p>
             <input
               type="email"
               value={email}
@@ -76,20 +90,29 @@ const ResendEmail = ({ email: propEmail }) => {
           </div>
         )}
 
-        {error && <p className="text-red-600 text-sm font-medium mb-3">{error}</p>}
-        {message && <p className="text-blue-700 text-sm font-medium mb-3">{message}</p>}
+        {error && (
+          <p className="text-red-600 text-sm font-medium mb-3">{error}</p>
+        )}
+        {message && (
+          <p className="text-blue-700 text-sm font-medium mb-3">{message}</p>
+        )}
 
         <div className="mt-4">
           <p className="text-gray-600 text-sm mb-2">
-            Didn't receive the verification link?{" "}</p>
+            Didn't receive the verification link?{" "}
+          </p>
           {resendTimer > 0 ? (
-            <p className="text-gray-500 text-sm">Resend link in {resendTimer} seconds</p>
+            <p className="text-gray-500 text-sm">
+              Resend link in {resendTimer} seconds
+            </p>
           ) : (
             <button
               onClick={handleResendLink}
               disabled={loading || !email}
               className={`font-medium ${
-                loading ? "text-gray-400 cursor-not-allowed" : "text-primaryBlue hover:underline"
+                loading
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-primaryBlue hover:underline"
               } mt-3`}
             >
               {loading ? (

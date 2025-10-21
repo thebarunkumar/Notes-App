@@ -4,6 +4,7 @@ import connectDB from "./config/database.js";
 import userRoute from "./routes/user.route.js";
 import todoRoute from "./routes/todo.route.js";
 import cors from "cors";
+import passport from "passport";
 import "./config/passport.js";
 import authRoutes from "./routes/auth.route.js";
 

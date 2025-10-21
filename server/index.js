@@ -10,7 +10,7 @@ import authRoutes from "./routes/auth.route.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware 
+// Middleware
 app.use(express.json());
 
 // Dynamic CORS setup
@@ -22,8 +22,14 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-            // allow requests with no origin (like mobile apps or curl)
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) return callback(null, true); // allow mobile/postman
+
+      // Exact match or wildcard for vercel.app subdomains
+      if (
+        allowedOrigins.includes(origin) ||
+        (process.env.PROD_CLIENT_DOMAIN &&
+          origin.endsWith(process.env.PROD_CLIENT_DOMAIN))
+      ) {
         callback(null, true);
       } else {
         console.error(`❌ CORS blocked for origin: ${origin}`);
@@ -34,7 +40,7 @@ app.use(
   })
 );
 
-// Routes 
+// Routes
 app.use("/auth", authRoutes);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/todo", todoRoute);
@@ -44,7 +50,7 @@ app.get("/", (req, res) => {
   res.send("✅ Notes App Server is running successfully 🚀");
 });
 
-// Error Handling 
+// Error Handling
 app.use((err, req, res, next) => {
   if (err.message === "Not allowed by CORS") {
     return res.status(403).json({
@@ -61,11 +67,15 @@ app.use((err, req, res, next) => {
   }
   console.error("🔥 Server Error:", err.message);
   res.status(500).json({ success: false, message: "Internal Server Error" });
-  next(err);
 });
 
-// Start Server 
-app.listen(PORT, () => {
-  console.log(`Server is running successfully on port ${PORT}`);
-  connectDB();
-});
+// Start Server
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running successfully ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ Failed to connect to MongoDB:", err);
+  });

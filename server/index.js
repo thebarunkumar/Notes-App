@@ -1,12 +1,13 @@
 import express from "express";
 import "dotenv/config";
 import connectDB from "./config/database.js";
+import passport from "passport";
+import cors from "cors";
+
 import userRoute from "./routes/user.route.js";
 import todoRoute from "./routes/todo.route.js";
-import cors from "cors";
-import passport from "passport";
-import "./config/passport.js";
 import authRoutes from "./routes/auth.route.js";
+import "./config/passport.js"; 
 
 const app = express();
 const PORT = process.env.PORT || 3000;

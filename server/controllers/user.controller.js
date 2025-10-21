@@ -178,12 +178,13 @@ export const resendVerification = async (req, res) => {
         const user = await User.findOne({ email })
         if (!user) return res.status(404).json({ success: false, message: "User not found" })
         if (user.isVerified) return res.status(400).json({ success: false, message: "User already verified" })
-
+    
+    // Always generate a new token for each resend
         const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, { expiresIn: "1d" })
         user.token = token
         await user.save()
 
-        // send verification email (await to catch any errors)
+    // Send verification email
         await verifyMail(token, email)
 
         return res.status(200).json({ success: true, message: "Verification email resent" })

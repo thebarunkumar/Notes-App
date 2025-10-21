@@ -10,12 +10,19 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export const verifyMail = async (token, email) => {
+    
+    // Read Handlebars template
     const emailTemplateSource = fs.readFileSync(
         path.join(__dirname, "template.hbs"),
         "utf-8"
     );
     const template = handlebars.compile(emailTemplateSource)
-    const htmlToSend = template({ token: encodeURIComponent(token) })
+
+      // Dynamic verification link
+    const clientUrl = process.env.CLIENT_URL|| "http://localhost:5173";
+    const htmlToSend = template({ token: encodeURIComponent(token), CLIENT_URL: clientUrl });
+        
+    // Configure transporter
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -30,7 +37,8 @@ export const verifyMail = async (token, email) => {
         subject: 'Notes App - Email Verification',
         html: htmlToSend,
     };
-
+    
+    // Send email
     transporter.sendMail(mailConfigurations, function (error, info) {
         if (error) {
             console.error("Error sending email:", error)

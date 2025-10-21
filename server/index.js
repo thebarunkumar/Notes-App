@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+app.use(passport.initialize());
 
 // Dynamic CORS setup
 const allowedOrigins = [

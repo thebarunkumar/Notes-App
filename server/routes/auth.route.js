@@ -5,6 +5,9 @@ import { isAuthenticated } from "../middleware/isAuthenticated.js";
 
 const router = express.Router();
 
+console.log("✅ Google OAuth callback URL:", `${process.env.SERVER_URL}/auth/google/callback`);
+console.log("✅ Frontend URL:", process.env.CLIENT_URL);
+
 // Step 1: Redirect to Google login
 router.get(
   "/google",

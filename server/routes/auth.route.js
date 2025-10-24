@@ -14,7 +14,7 @@ router.get(
 // Step 2: Google redirects back here
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false, failureRedirect: "/"}),
+  passport.authenticate("google", { session: false}),
   (req, res) => {
     try {
       // Generate JWT

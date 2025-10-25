@@ -2,7 +2,6 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { User } from "../models/user.model.js";
 
-console.log("Google callback URL Passport:", `${process.env.SERVER_URL}/auth/google/callback`);
 passport.use(
   new GoogleStrategy(
     {

@@ -12,11 +12,6 @@ import "./config/passport.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-console.log('SERVER_URL:', process.env.SERVER_URL);
-console.log('CLIENT_URL:', process.env.CLIENT_URL);
-console.log('NODE_ENV:', process.env.NODE_ENV);
-
-
 // Middleware
 app.use(express.json());
 app.use(passport.initialize());

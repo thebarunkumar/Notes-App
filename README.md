@@ -70,20 +70,28 @@ Key folders and files:
 
 Create a `.env` file at the `server/` root and set the following variables (example values shown):
 
-```
+
+## Server environment example
+
 PORT=8000
-MONGO_URI=mongodb://localhost:27017/notes-app
+MONGO_URI=mongodb://mongo:27017/notes-app
 SECRET_KEY=your_jwt_secret
 CLIENT_URL=http://localhost:5173
+SERVER_URL=http://localhost:8000
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 MAIL_USER=your.email@gmail.com
 MAIL_PASS=your_gmail_app_password
-```
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret  
 
 Notes:
 - `MAIL_USER` and `MAIL_PASS` are used by Nodemailer to send verification and OTP emails. For Gmail, use an App Password if 2FA is enabled.
-- `GOOGLE_CLIENT_*` values are required for Google OAuth. The callback URL in `server/config/passport.js` is set to `http://localhost:8000/auth/google/callback`.
+- `GOOGLE_CLIENT_*` values are required for Google OAuth. 
+- For local development, set callback URL to `http://localhost:8000/auth/google/callback`
+- For production (Vercel), add `https://notes-app-server-puce.vercel.app/auth/google/callback` to authorized redirect URIs in Google Cloud Console.
+- When deploying to Vercel, set `SERVER_URL` environment variable to your full server URL (e.g., `https://notes-app-server-puce.vercel.app`)
 
 ## Setup & run (development)
 
@@ -99,14 +107,14 @@ Open two terminals (one for backend and one for frontend).
 Backend (server):
 
 ```powershell
-cd "c:\Users\THEBARUNKUMAR\Desktop\Full Stact App\Notes App\server";
+cd "c:\Users\Desktop\Full Stact App\Notes App\server";
 npm install
 ```
 
 Frontend (client):
 
 ```powershell
-cd "c:\Users\THEBARUNKUMAR\Desktop\Full Stact App\Notes App\client";
+cd "c:\Users\Desktop\Full Stact App\Notes App\client";
 npm install
 ```
 
@@ -115,14 +123,14 @@ Run the apps
 Backend:
 
 ```powershell
-cd "c:\Users\THEBARUNKUMAR\Desktop\Full Stact App\Notes App\server";
+cd "c:\Users\Desktop\Full Stact App\Notes App\server";
 npm run dev
 ```
 
 Frontend:
 
 ```powershell
-cd "c:\Users\THEBARUNKUMAR\Desktop\Full Stact App\Notes App\client";
+cd "c:\Users\Desktop\Full Stact App\Notes App\client";
 npm run dev
 ```
 
@@ -190,9 +198,12 @@ UI components are in `client/src/components/ui/` and include form elements, butt
 
 ## File uploads
 
-- Backend uses Multer (`server/middleware/multer.js`) to accept image files (limit 5 MB, types: jpeg/jpg/png/gif).
-- Uploaded files are saved to the `uploads/` folder and served statically at `/uploads`.
-- When updating a todo with a new image, the server attempts to delete the old image file from disk.
+- Backend uses Cloudinary for image storage and management.
+- Image upload configuration is in `server/config/cloudinary.js`.
+- Supported file types: jpeg/jpg/png/gif (limit 10 MB).
+- Images are automatically optimized and served through Cloudinary's CDN.
+- When updating a todo with a new image, the old image is automatically deleted from Cloudinary.
+- Image URLs are stored in the todo document as Cloudinary secure URLs.
 
 ## Validation & error handling
 
@@ -216,11 +227,31 @@ UI components are in `client/src/components/ui/` and include form elements, butt
 
 ## Troubleshooting
 
-- MongoDB connection: Check `MONGO_URI` and that MongoDB is running.
-- Email sending fails: Verify `MAIL_USER` and `MAIL_PASS` and allow less secure apps or use app passwords for Gmail.
-- OAuth issues: Check your Google Cloud Console OAuth credentials and make sure redirect URIs match the backend callback.
-- CORS errors: Confirm `CLIENT_URL` matches the Vite dev server.
-- Static uploads not found: Files are saved to `uploads/` in project root; ensure the server has permission to write.
+Common Issues and Solutions:
+
+1. Google OAuth Errors:
+   - Error 400 (redirect_uri_mismatch): Make sure to add both development and production callback URLs in Google Cloud Console:
+     - Local: `http://localhost:8000/auth/google/callback`
+     - Production: `https://notes-app-server-puce.vercel.app/auth/google/callback`
+   - Ensure `SERVER_URL` environment variable is set correctly in production
+
+2. Email Verification Issues:
+   - Email sending fails: Verify `MAIL_USER` and `MAIL_PASS` and use app passwords for Gmail with 2FA
+   - OTP not received: Check spam folder and verify email templates in `emailVerify/`
+
+3. Database Connection:
+   - MongoDB connection errors: Check `MONGO_URI` format and ensure MongoDB is running
+   - For Atlas: Verify IP whitelist and database user credentials
+
+4. CORS and API Issues:
+   - CORS errors: Confirm `CLIENT_URL` matches the frontend URL (Vite dev server in development)
+   - API 404 errors: Check if `SERVER_URL` is set correctly in frontend environment
+
+5. File Upload Issues:
+   - Upload failures: Verify Cloudinary credentials (CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET)
+   - Upload size errors: Verify file size is under 10MB limit
+   - Missing images: Check if Cloudinary URLs are properly stored and accessible
+   - Image not displaying: Ensure the Cloudinary secure URL is being used
 
 ## Next steps / improvements
 
@@ -228,5 +259,5 @@ UI components are in `client/src/components/ui/` and include form elements, butt
 - Add rate limiting and request throttling to sensitive endpoints.
 - Extract configuration constants and centralize error handling.
 - Add unit & integration tests (Jest / Supertest) for backend endpoints.
-- Move uploaded files to S3 or another cloud storage provider.
+- Implement image optimization and transformation using Cloudinary's advanced features.
 - Improve frontend form validation and UX for error states.

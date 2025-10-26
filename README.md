@@ -73,18 +73,18 @@ Create a `.env` file at the `server/` root and set the following variables (exam
 
 ## Server environment example
 
-PORT=8000
-MONGO_URI=mongodb://mongo:27017/notes-app
-SECRET_KEY=your_jwt_secret
-CLIENT_URL=http://localhost:5173
-SERVER_URL=http://localhost:8000
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-MAIL_USER=your.email@gmail.com
-MAIL_PASS=your_gmail_app_password
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret  
+- PORT=8000
+- MONGO_URI=mongodb://mongo:27017/notes-app
+- SECRET_KEY=your_jwt_secret
+- CLIENT_URL=http://localhost:5173
+- SERVER_URL=http://localhost:8000
+- GOOGLE_CLIENT_ID=your_google_client_id
+- GOOGLE_CLIENT_SECRET=your_google_client_secret
+- MAIL_USER=your.email@gmail.com
+- MAIL_PASS=your_gmail_app_password
+- CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+- CLOUDINARY_API_KEY=your_cloudinary_api_key
+- CLOUDINARY_API_SECRET=your_cloudinary_api_secret  
 
 Notes:
 - `MAIL_USER` and `MAIL_PASS` are used by Nodemailer to send verification and OTP emails. For Gmail, use an App Password if 2FA is enabled.

@@ -1,8 +1,77 @@
-# Notes App
+<div align="center">
+  <h1>📝 Notes App</h1>
+  <p>A modern, full-stack note-taking application with secure authentication and real-time updates</p>
+  
+  [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://reactjs.org/)
+  [![Node.js](https://img.shields.io/badge/Node.js-18-339933?logo=node.js)](https://nodejs.org/)
+  [![MongoDB](https://img.shields.io/badge/MongoDB-7.0-47A248?logo=mongodb)](https://www.mongodb.com/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  
+</div>
 
-A full-stack Notes / Todo application with user authentication (email verification & Google OAuth), password reset via OTP, file uploads for notes, and a React + Vite frontend with Redux for state management.
+## Project Overview
 
-This README documents project structure, setup, environment variables, running the project, API endpoints, authentication flow, development notes, and troubleshooting.
+The Notes App is a full-stack web application that allows users to create, manage, and organize their personal notes with rich text and image support. Built with modern web technologies, it provides a seamless user experience across devices with secure authentication and real-time updates.
+
+## Technical Stack
+
+### Frontend
+- **Framework**: React 19 with Vite for fast development and optimized builds
+- **State Management**: Redux Toolkit for predictable state management
+- **Styling**: TailwindCSS with custom theming and Radix UI components
+- **Routing**: React Router v7 for client-side navigation
+- **HTTP Client**: Axios for API communication
+- **UI Components**: Custom-built components with responsive design
+
+### Backend
+- **Runtime**: Node.js with Express.js framework
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: JWT and OAuth 2.0 (Google)
+- **File Storage**: Cloudinary for image uploads and management
+- **Email Service**: Nodemailer for transactional emails
+- **Validation**: Yup for request validation
+
+### DevOps
+- **Version Control**: Git
+- **Package Management**: npm
+- **Development Tools**: ESLint, Prettier
+
+## Key Features
+
+### User Authentication
+- Secure registration with email verification
+- Password reset functionality
+- Social login (Google OAuth)
+- Session management with JWT
+- Protected routes
+
+### Note Management
+- Create, read, update, and delete notes
+- Rich text formatting
+- Image upload and preview
+- Responsive design for all devices
+- Real-time updates
+
+### Advanced Features
+- Drag-and-drop image uploads
+- Search functionality
+- Note categorization
+- Dark/Light mode
+- Offline support (PWA ready)
+
+### Security
+- Password hashing with bcrypt
+- CSRF protection
+- Rate limiting
+- Input sanitization
+- Secure HTTP headers
+
+### Performance
+- Code splitting
+- Lazy loading
+- Image optimization
+- Efficient state management
+- Cached API responses
 
 ## Table of Contents
 
@@ -261,3 +330,71 @@ Common Issues and Solutions:
 - Add unit & integration tests (Jest / Supertest) for backend endpoints.
 - Implement image optimization and transformation using Cloudinary's advanced features.
 - Improve frontend form validation and UX for error states.
+
+# Contributing to Notes App
+
+We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
+
+- Reporting a bug
+- Discussing the code
+- Submitting a fix
+- Proposing new features
+- Becoming a maintainer
+
+## We Develop with GitHub
+We use GitHub to host code, track issues and feature requests, and accept pull requests.
+
+## We Use GitHub Flow
+All code changes happen through pull requests. Pull requests are the best way to propose changes to the codebase.
+
+1. Fork the repo and create your branch from `main`.
+2. If you've added code that should be tested, add tests.
+3. If you've changed APIs, update the documentation.
+4. Ensure the test suite passes.
+5. Make sure your code lints.
+6. Issue that pull request!
+
+## Any contributions you make will be under the MIT Software License
+In short, when you submit code changes, your submissions are understood to be under the same [MIT License](LICENSE) that covers the project.
+
+## Report bugs using GitHub's issues
+We use GitHub issues to track public bugs. Report a bug by opening a new issue.
+
+### Write bug reports with detail, background, and sample code
+A good bug report includes:
+- A quick summary and/or background
+- Steps to reproduce
+  - Be specific! Give sample code if you can.
+- What you expected would happen
+- What actually happens
+- Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
+
+## Use a Consistent Coding Style
+- 2 spaces for indentation
+- Follow the existing code style
+- Run `npm run lint` to automatically format your code
+
+## License
+By contributing, you agree that your contributions will be licensed under its MIT License.
+
+MIT License
+
+Copyright (c) 2025 Notes App
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
